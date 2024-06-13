@@ -30,6 +30,7 @@ import { ApiResponse } from "@/types/ApiResponse";
 import { toast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
 
+
 export default function SignUpForm() {
   const [username, setUsername] = useState<string>("");
   const debouncedUsername = useDebounce<string>(username, 500);
@@ -164,7 +165,7 @@ export default function SignUpForm() {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Submit</Button>
+              <Button type="submit" disabled={isSubmitting}>SignUp</Button>
             </form>
           </Form>
         </div>
