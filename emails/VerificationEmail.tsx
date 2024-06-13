@@ -18,7 +18,7 @@ export default function VerificationEmail({username, otp} : VerificationEmailPro
     return (
         <Html lang="en" dir="ltr">
             <Head>
-                <title>Verification Cod </title>
+                <title>Verification Code </title>
                 <Font 
                     fontFamily="Roboto"
                     fallbackFontFamily="Verdana"
@@ -36,7 +36,7 @@ export default function VerificationEmail({username, otp} : VerificationEmailPro
                     </Row>
                     <Row>
                         <Text>
-                            Thank You for registering. Please use the following verificationcode to complete your registration:
+                            Thank You for registering. Please use the following verificationcode to complete your registration: {otp}
                         </Text>
                     </Row>
                     <Row>

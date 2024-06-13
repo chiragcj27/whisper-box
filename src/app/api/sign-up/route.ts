@@ -5,7 +5,6 @@ import { sendVerificationEmail } from "@/helpers/sendverificationEmail";
 
 export async function POST(request: Request){
     await dbConnect()
-
     try {
         const {username, email, password} = await request.json()
 
@@ -13,7 +12,7 @@ export async function POST(request: Request){
             username,
             isVerified: true
         })
-
+        
         if (existingUserVerifiedByUsername) {
             return Response.json({
                 success: false,
@@ -23,8 +22,7 @@ export async function POST(request: Request){
 
         const existingUserByEmail = await UserModel.findOne({email})
         const verifyCode = Math.floor(100000 + Math.random()* 900000).toString()
-
-
+        
         if(existingUserByEmail){
             if(existingUserByEmail.isVerified) {
                 return Response.json({
@@ -63,6 +61,7 @@ export async function POST(request: Request){
             username,
             verifyCode
         )
+        console.log(emailResponse)
 
         if(!emailResponse.success) {
             return Response.json({
@@ -74,7 +73,7 @@ export async function POST(request: Request){
         return Response.json({
             success: true,
             message: "User Registered Successfully. Please verify your email."
-        }, {status: 500})
+        }, {status: 201})
 
     } catch(error) {
         console.error('Error registering user', error)
