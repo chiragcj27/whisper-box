@@ -1,4 +1,3 @@
-
 import { signUpSchema } from "@/schemas/signUpSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -23,10 +22,7 @@ import {
   CardTitle,
 } from "./ui/card";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import useDebounce from "@/lib/hooks/useDebounce";
-import axios, { AxiosError } from "axios";
-import { ApiResponse } from "@/types/ApiResponse";
+
 import { toast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
 import { signInSchema } from "@/schemas/signInSchema";
@@ -43,23 +39,26 @@ export default function SignInForm() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof signInSchema>) {
-    const result = await signIn('credentials', {
-        redirect: false,
-        identifier: values.identifier,
-        password: values.password
-    })
-    if(result?.error) {
-        toast({
-            title: "Login Failed",
-            description: "Incorrect username or password",
-            variant:"destructive" 
-        })
+    async function onSubmit(values: z.infer<typeof signInSchema>) {
+      const result = await signIn('credentials', {
+          identifier: values.identifier,
+          password: values.password
+      })
+
+      console.log(result)
+
+      if(result?.error) {
+          toast({
+              title: "Login Failed",
+              description: "Incorrect username or password",
+              variant:"destructive"
+          })
+      }
+      if(result?.url) {
+          router.replace('/dashboard')
+      }
     }
-    if(result?.url) {
-        router.replace('/dashboard')
-    }
-  }
+
 
   return (
     <Card>
@@ -76,9 +75,9 @@ export default function SignInForm() {
                 name="identifier"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email/username</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="Email/username" {...field} />
+                      <Input placeholder="Email" {...field} />
                     </FormControl>
 
                     <FormMessage />
