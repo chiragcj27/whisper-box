@@ -6,6 +6,7 @@ import mindfullness from "@/illustrations/mindfullness.svg"
 import wandering from "@/illustrations/wandering.svg"
 import Image from "next/image";
 import AcceptMessage from "@/components/AcceptMessage";
+import Messsage from "@/components/Messages";
 
 export default function Dashboard() {
   const session = useSession();
@@ -20,16 +21,18 @@ export default function Dashboard() {
         </text>
    </div>
    <div className="">
-    {/* <div className="ml-10 mt-10 flex">
+   <div className="ml-10 mt-10 flex">
         Copy your Url
     </div>
-   <div className="ml-10 mt-3 flex">
+   <div className="mx-10 mt-3 flex justify-between">
    <CopyUrlComponent url={customUrl} />
+   <AcceptMessage/>
    </div>
-   <AcceptMessage/> */}
-   <div className="fixed bottom-0 right-0 width-24 m-4 height-24">
+   <Messsage/>
+   
+   {/* <div className="fixed bottom-0 right-0 width-24 m-4 height-24">
         <Image src={wandering} alt ="mindfullness image" />
-   </div>
+   </div> */}
    </div>
    </>
   );
