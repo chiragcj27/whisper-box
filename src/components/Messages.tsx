@@ -24,11 +24,11 @@ export default function Message() {
       if (res.data.success) {
         setMessages(res.data.messages);
       } else {
-        toast({ title: "Error", description: res.data.message });
+        toast({ title: "Error", description: res.data.message});
       }
     } catch (error) {
       console.error(error);
-      toast({ title: "Error", description: "Failed to fetch messages"});
+      toast({ title: "Error", description: "Failed to fetch messages" });
     } finally {
       setLoading(false);
     }
@@ -45,13 +45,13 @@ export default function Message() {
       const res = await axios.delete(`/api/delete-message/${messageId}`);
       if (res.data.success) {
         setMessages(messages.filter((message) => message._id !== messageId));
-        toast({ title: "Success", description: "Message deleted successfully"});
+        toast({ title: "Success", description: "Message deleted successfully" });
       } else {
         toast({ title: "Error", description: res.data.message});
       }
     } catch (error) {
       console.error(error);
-      toast({ title: "Error", description: "Failed to delete message"});
+      toast({ title: "Error", description: "Failed to delete message" });
     }
   }
 
