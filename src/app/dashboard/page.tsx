@@ -12,7 +12,7 @@ export default function Dashboard() {
   const session = useSession();
   const user = session.data?.user
   const username = user?.username
-  const customUrl = "http://localhost:3000/send-message/"+username
+  const customUrl = "https://whisper-box-theta.vercel.app//send-message/"+username
   return (
    <>
    <div className="ml-10 mt-10">
