@@ -15,7 +15,7 @@ export default function Page() {
   async function onSend() {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/send-message",
+        "/api/send-message",
         {
           username,
           content,
