@@ -103,9 +103,9 @@ export default function SignInForm() {
         </div>
       </CardContent>
       <CardFooter>
-        Already have an account?
-        <Link className="underline pl-2" href={"/sign-in"}>
-          Sign in
+        Dont have an account?
+        <Link className="underline pl-2" href={"/sign-up"}>
+          SignUp
         </Link>
       </CardFooter>
     </Card>
