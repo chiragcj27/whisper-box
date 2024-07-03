@@ -15,6 +15,7 @@ const AcceptMessage: React.FC = () => {
   useEffect(() => {
     if (user) {
       setIsAcceptingMessage(user.isAcceptingMessages);
+      
     }
   }, [user]);
 
