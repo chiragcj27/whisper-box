@@ -46,7 +46,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen grid md:grid-cols-3 grid-cols-1">
-      <div className="bg-slate-700 relative">
+      <div className="bg-slate-600 relative">
         <div className="absolute bottom-0 left-0 p-4 md:p-0">
           <Image src={team_up} alt="illustration" className="w-24 md:w-auto" />
         </div>
