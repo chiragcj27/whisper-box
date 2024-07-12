@@ -38,6 +38,7 @@ export async function POST(request: Request): Promise<Response> {
             communityName,
             communityDescription,
             createdBy: userId,
+            members: [{ userId: userId }],
             isPublic
         });
 
