@@ -1,4 +1,7 @@
 import mongoose, {Schema, Document} from "mongoose";
+import CommunityModel from "./Community";
+import PostModel from "./Post";
+import CommentModel from "./Comment";
 
 export interface Message extends Document{
     content: string;
@@ -25,8 +28,10 @@ export interface User extends Document{
     verifyCodeExpiry: Date;
     isVerified: boolean;
     isAcceptingmessage: boolean;
-    messages : Message[]
-
+    messages : Message[];
+    communities: Schema.Types.ObjectId[];
+    posts: Schema.Types.ObjectId[];
+    comments: Schema.Types.ObjectId[];
 }
 
 const UserSchema: Schema<User>= new Schema({
@@ -63,7 +68,19 @@ const UserSchema: Schema<User>= new Schema({
         type: Boolean,
         default: true,
     },
-    messages: [MessageSchema]
+    messages: [MessageSchema],
+    communities: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Community'
+    }],
+    posts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+    }],
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+    }],
 })
 
 const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User", UserSchema)
