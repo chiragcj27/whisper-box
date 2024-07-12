@@ -7,7 +7,7 @@ interface Community extends Document {
     communityDescription: string;
     createdBy: Schema.Types.ObjectId;
     createdWhen: Date;
-    membersCount: number;
+    members: Schema.Types.ObjectId[];
     posts: Schema.Types.ObjectId[];
     isPublic: boolean
 }
@@ -30,10 +30,12 @@ const communitySchema = new Schema<Community>({
         type: Date,
         default: Date.now
     },
-    membersCount: {
-        type: Number,
-        default: 1
-    },
+    members: [{
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        }
+    }],
     posts: [{
         type: Schema.Types.ObjectId,
         ref: 'Post',
