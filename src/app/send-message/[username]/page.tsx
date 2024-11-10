@@ -8,6 +8,7 @@ import { toast } from "@/components/ui/use-toast";
 import SuggestedMessages from "@/components/SuggestedMessages";
 import team_up from "@/illustrations/team_up.svg";
 import Image from "next/image";
+import Wall from "@/components/Wall";
 
 export default function Page() {
   const params = useParams<{ username: string }>();
@@ -48,7 +49,8 @@ export default function Page() {
     <div className="min-h-screen grid md:grid-cols-3 grid-cols-1">
       <div className="bg-slate-600 relative">
         <div className="absolute bottom-0 left-0 p-4 md:p-0">
-          <Image src={team_up} alt="illustration" className="w-24 md:w-auto" />
+          {/* <Image src={team_up} alt="illustration" className="w-24 md:w-auto" /> */}
+          <Wall/>
         </div>
       </div>
       <div className="mt-20 md:mt-60 mx-4 md:mx-56 md:col-span-2 col-span-1">

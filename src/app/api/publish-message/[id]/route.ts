@@ -4,8 +4,10 @@ import { getServerSession } from 'next-auth';
 import UserModel from '@/model/User';
 import mongoose from 'mongoose';
 import { authOptions } from '../../auth/[...nextauth]/options';
+import Email from 'next-auth/providers/email';
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+    console.log("1");
     await dbConnect();
 
     const session = await getServerSession();
@@ -27,32 +29,27 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
             { status: 400 }
         );
     }
-
-    const email = user.email
+    console.log("2");
+    const userId = user._id
     const messageId = id
-
+    const email = user.email
 
     try {
+        console.log("3");
         const result = await UserModel.updateOne(
-            { email },
-            { $pull: { messages: { _id: messageId } } }
+            {email, "messages._id": messageId },
+            { $set: { "messages.$.isPublished": true } }
         );
-        console.log("result : ", result);
-        if (result.modifiedCount === 0) {
-            return NextResponse.json(
-                { success: false, message: "Message not found" },
-                { status: 404 }
-            );
-        }
-
-        return NextResponse.json(
-            { success: true, message: "Message deleted successfully" },
-            { status: 200 }
-        );
+       console.log("result : ", result);
+       return NextResponse.json({
+            success: true,
+            message: "Message published successfully"
+        },{ status: 200});
+       
     } catch (err) {
-        
+        console.log("error",err);
         return NextResponse.json(
-            { success: false, message: "Failed to delete message" },
+            { success: false, message: "Failed to publish message" },
             { status: 500 }
         );
     }
