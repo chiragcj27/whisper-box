@@ -5,7 +5,8 @@ import CommentModel from "./Comment";
 
 export interface Message extends Document{
     content: string;
-    createdAt: Date
+    createdAt: Date;
+    isPublished: boolean;
 }
 
 const MessageSchema: Schema<Message> = new Schema({
@@ -17,6 +18,10 @@ const MessageSchema: Schema<Message> = new Schema({
         type: Date,
         required: true,
         default: Date.now
+    },
+    isPublished: {
+        type: Boolean,
+        default: false
     }
 })
 

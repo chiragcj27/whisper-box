@@ -8,32 +8,27 @@ import { NextResponse } from "next/server";
 export async function GET(request: Request) {
     await dbConnect();
 
-    const session = await getServerSession(authOptions);
-    const user = session?.user;
-
-    if (!session || !user) {
+    
+    const user = request.headers.get("username");
+    console.log("username",user);
+    if ( !user) {
         return NextResponse.json(
             {
                 success: false,
-                message: "Not Authenticated"
+                message: "invalid user",
             }, { status: 401 }
         );
     }
 
-    const userId = new mongoose.Types.ObjectId(user._id);
+    
 
     try {
-        // const user = await UserModel.aggregate([
-        //     { $match: { _id: userId } },
-        //     { $unwind: '$messages' },
-        //     { $sort: { 'messages.createdAt': -1 } },
-        //     { $group: { _id: '$_id', messages: { $push: '$messages' } } }
-        // ]);
-        const userr = await UserModel.findOne(userId);
+        const userr = await UserModel.findOne({ username: user });
         const messages = userr?.messages;
 
+        const publishedMessages = messages?.filter((message) => message.isPublished);
+
         console.log(userr);
-        // if (!user || user.length === 0) {
         if(!userr){
             return NextResponse.json(
                 {
@@ -46,7 +41,7 @@ export async function GET(request: Request) {
         return NextResponse.json(
             {
                 success: true,
-                messages: messages
+                publishedMessages: publishedMessages
             }, { status: 200 }
         );
 
