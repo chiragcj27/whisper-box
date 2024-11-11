@@ -13,8 +13,7 @@ interface Message {
 
 export default function Message() {
   const { data: session, status } = useSession();
-  console.log("Session status:", status);
-  console.log("Session data:", session);
+  
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -51,7 +50,24 @@ export default function Message() {
       }
     } catch (error) {
       console.error(error);
-      toast({ title: "Error", description: "Failed to delete message" });
+      toast({ title: "Error", description: "Failed to deleted message" });
+    }
+  }
+
+  async function handlePublish(messageId: string) {
+    try {
+      
+      const res = await axios.post(`/api/publish-message/${messageId}`);
+      console.log("hi");
+      if (res.data.success) {
+        
+        toast({ title: "Success", description: "Message publish successfully" });
+      } else {
+        toast({ title: "Error", description: res.data.message});
+      }
+    } catch (error) {
+      console.error(error);
+      toast({ title: "Error", description: "Failed to publish message" });
     }
   }
 
@@ -63,7 +79,7 @@ export default function Message() {
     <ScrollArea className="h-[350px] w-[750px] rounded-md border p-4">
       {messages.length > 0 ? (
         messages.map((message) => (
-          <MessageCard key={message._id} message={message} onDelete={handleDelete} />
+          <MessageCard key={message._id} message={message} onDelete={handleDelete} onPublish={handlePublish}/>
         ))
       ) : (
         <p>No messages available</p>
