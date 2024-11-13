@@ -2,11 +2,13 @@ import mongoose, {Schema, Document} from "mongoose";
 import CommunityModel from "./Community";
 import PostModel from "./Post";
 import CommentModel from "./Comment";
+import { number } from "zod";
 
 export interface Message extends Document{
     content: string;
     createdAt: Date;
     isPublished: boolean;
+    noOfstars: number;
 }
 
 const MessageSchema: Schema<Message> = new Schema({
@@ -22,8 +24,14 @@ const MessageSchema: Schema<Message> = new Schema({
     isPublished: {
         type: Boolean,
         default: false
+    },
+    noOfstars: {
+        type: Number,
+        default: 0,
+        
     }
-})
+},{strict: true})
+
 
 export interface User extends Document{
     username: string;
@@ -86,8 +94,8 @@ const UserSchema: Schema<User>= new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Comment'
     }],
-})
+},{strict:true})
 
 const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User", UserSchema)
-
+export const MessageModel = (mongoose.models.Message as mongoose.Model<Message>) || mongoose.model<Message>("Message", MessageSchema)
 export default UserModel;

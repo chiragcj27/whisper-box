@@ -7,7 +7,6 @@ import { authOptions } from '../../auth/[...nextauth]/options';
 import Email from 'next-auth/providers/email';
 
 export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-    console.log("1");
     await dbConnect();
 
     const session = await getServerSession();
@@ -29,18 +28,16 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
             { status: 400 }
         );
     }
-    console.log("2");
     const userId = user._id
     const messageId = id
     const email = user.email
 
     try {
-        console.log("3");
+      
         const result = await UserModel.updateOne(
             {email, "messages._id": messageId },
             { $set: { "messages.$.isPublished": true } }
         );
-       console.log("result : ", result);
        return NextResponse.json({
             success: true,
             message: "Message published successfully"
