@@ -6,17 +6,20 @@ interface MessageCardProps {
     content: string;
     createdAt: string;
     noOfstars: number;
+    isPublished: boolean;
   };
   onDelete: (id: string) => void;
-  onPublish: (id: string, isPublished: boolean) => void;
+  onPublish: (id: string, isPublished: boolean) => Promise<void>;
 }
 
 const MessageCard: React.FC<MessageCardProps> = ({ message, onDelete, onPublish }) => {
-  const [isPublished, setIsPublished] = useState(false);
 
-  const handleTogglePublish = () => {
-    onPublish(message._id, !isPublished);
-    setIsPublished(!isPublished);
+  const handleTogglePublish = async () => {
+    try {
+      await onPublish(message._id, !message.isPublished);
+    } catch (error) {
+      console.error('Failed to update publish status:', error);
+    }
   };
 
   return (
@@ -42,11 +45,11 @@ const MessageCard: React.FC<MessageCardProps> = ({ message, onDelete, onPublish 
         </button>
         <button
           className={`publish-button ${
-            isPublished ? 'bg-blue-500 hover:bg-blue-600' : 'bg-green-500 hover:bg-green-600'
+            message.isPublished ? 'bg-blue-500 hover:bg-blue-600' : 'bg-green-500 hover:bg-green-600'
           } text-white font-medium rounded-md px-3 py-1.5 transition duration-200`}
           onClick={handleTogglePublish}
         >
-          {isPublished ? 'Unpublish' : 'Publish'}
+          {message.isPublished ? 'Unpublish' : 'Publish'}
         </button>
       </div>
     </div>
