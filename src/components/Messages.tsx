@@ -9,7 +9,8 @@ interface Message {
   _id: string;
   content: string;
   createdAt: string;
-  noOfstars : number
+  noOfstars : number;
+  isPublished: boolean;
 }
 
 export default function Message() {
@@ -24,7 +25,7 @@ export default function Message() {
       if (res.data.success) {
         setMessages(res.data.messages);
       } else {
-        toast({ title: "Error", description: res.data.message});
+        toast({ title: "Error", description: res.data.message });
       }
     } catch (error) {
       console.error(error);
@@ -47,28 +48,28 @@ export default function Message() {
         setMessages(messages.filter((message) => message._id !== messageId));
         toast({ title: "Success", description: "Message deleted successfully" });
       } else {
-        toast({ title: "Error", description: res.data.message});
+        toast({ title: "Error", description: res.data.message });
       }
     } catch (error) {
       console.error(error);
-      toast({ title: "Error", description: "Failed to deleted message" });
+      toast({ title: "Error", description: "Failed to delete message" });
     }
   }
 
-  async function handlePublish(messageId: string) {
+  async function handlePublish(messageId: string, isPublished: boolean) {
     try {
-      
-      const res = await axios.post(`/api/publish-message/${messageId}`);
-      console.log("hi");
+      const res = await axios.post(`/api/publish-message/${messageId}`, { action: !isPublished });
       if (res.data.success) {
-        
-        toast({ title: "Success", description: "Message publish successfully" });
+        setMessages(messages.map(message => 
+          message._id === messageId ? { ...message, isPublished: !isPublished } : message
+        ));
+        toast({ title: "Success", description: `Message ${isPublished ? 'unpublished' : 'published'} successfully` });
       } else {
-        toast({ title: "Error", description: res.data.message});
+        toast({ title: "Error", description: res.data.message });
       }
     } catch (error) {
       console.error(error);
-      toast({ title: "Error", description: "Failed to publish message" });
+      toast({ title: "Error", description: "Failed to publish/unpublish message" });
     }
   }
 
@@ -80,7 +81,12 @@ export default function Message() {
     <ScrollArea className="h-[350px] w-[750px] rounded-md border p-4">
       {messages.length > 0 ? (
         messages.map((message) => (
-          <MessageCard key={message._id} message={message} onDelete={handleDelete} onPublish={handlePublish}/>
+          <MessageCard 
+            key={message._id} 
+            message={message} 
+            onDelete={handleDelete} 
+            onPublish={() => handlePublish(message._id, message.isPublished)}
+          />
         ))
       ) : (
         <p>No messages available</p>
