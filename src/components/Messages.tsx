@@ -9,6 +9,7 @@ interface Message {
   _id: string;
   content: string;
   createdAt: string;
+  noOfstars : number
 }
 
 export default function Message() {
