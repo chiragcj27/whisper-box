@@ -6,23 +6,24 @@ import { Switch } from "@/components/ui/switch";
 import { Card } from "./ui/card";
 
 const AcceptMessage: React.FC = () => {
-  const { data: session } = useSession();
+  const { data: session ,update} = useSession();
   const user: any = session?.user;
-  const [isAcceptingMessage, setIsAcceptingMessage] = useState<boolean>(
-    user?.isAcceptingMessages ?? false
-  );
+  const [isAcceptingMessage, setIsAcceptingMessage] = useState<boolean>();
 
   useEffect(() => {
     if (user) {
-      setIsAcceptingMessage(user.isAcceptingMessages);
-      
+      setIsAcceptingMessage(user.isAcceptingmessage);
+      console.log("User:", user);
+      console.log("Accepting Messages:", isAcceptingMessage);
     }
   }, [user]);
 
   const handleToggle = async () => {
     if (!user) return; // Ensure user is defined
-
     const newStatus = !isAcceptingMessage;
+    await update({...session, user: {...user, isAcceptingmessage: newStatus}});
+            
+    
     setIsAcceptingMessage(newStatus);
 
     try {
@@ -45,6 +46,7 @@ const AcceptMessage: React.FC = () => {
         <div className="m-2 flex items-center space-x-2">
           <Switch
             id="accepting-message"
+            defaultChecked={isAcceptingMessage}
             checked={isAcceptingMessage}
             onCheckedChange={handleToggle}
           />

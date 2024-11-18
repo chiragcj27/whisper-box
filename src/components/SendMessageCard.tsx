@@ -32,7 +32,8 @@ export default function SendMessageCard({ onSubmit, onGoBack }: { onSubmit: () =
                         variant: "destructive",
                     });
                 }
-            } else {
+            } 
+            else {
                 toast({
                     title: "Failed !!",
                     description: "Something unexpected happened",

@@ -5,4 +5,5 @@ export interface ApiResponse{
     message: string;
     isAcceptingMessages?: boolean
     messagges?: Array<Message>
+    restrictedKeywords?: string
 }

@@ -28,11 +28,21 @@ export async function POST(request: Request) {
         { status: 403 }
       );
     }
-
+    if(user.restrictedKeywords.length > 0){
+      if(user.restrictedKeywords.some((word) => content.includes(word))){
+        return Response.json(
+          {
+            success: false,
+            message: "Message contains restricted words",
+          },
+          { status: 403 }
+        );
+      }
+    }
     const newMessage = new MessageModel({ content, createdAt: new Date(), isPublished: false, noOfstars: stars });
     console.log(newMessage);
    
-    user.messages = [...user.messages, newMessage];
+    user.messages = [newMessage,...user.messages];
    
     await user.save()
     console.log(user.messages);
