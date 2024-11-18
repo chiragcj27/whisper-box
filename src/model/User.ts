@@ -45,6 +45,7 @@ export interface User extends Document{
     communities: Schema.Types.ObjectId[];
     posts: Schema.Types.ObjectId[];
     comments: Schema.Types.ObjectId[];
+    restrictedKeywords: string[];
 }
 
 const UserSchema: Schema<User>= new Schema({
@@ -94,6 +95,10 @@ const UserSchema: Schema<User>= new Schema({
         type: Schema.Types.ObjectId,
         ref: 'Comment'
     }],
+    restrictedKeywords: {
+        type: [String],
+        default: []
+    }
 },{strict:true})
 
 const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User", UserSchema)

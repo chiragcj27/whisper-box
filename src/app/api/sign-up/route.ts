@@ -49,6 +49,7 @@ export async function POST(request: Request): Promise<Response> {
                 isVerified: false,
                 isAcceptingmessage: true,
                 messages: [],
+                restrictedKeywords: [],
             });
 
             await newUser.save();
