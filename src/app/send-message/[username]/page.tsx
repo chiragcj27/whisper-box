@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CardDescription, CardTitle } from "@/components/ui/card";
 import { TextHoverEffect } from "@/components/ui/TextHover";
+import Navbar from "@/components/Navbar";
 
 export default function Page() {
   const [showButtons, setShowButtons] = useState(true);
@@ -40,6 +41,8 @@ export default function Page() {
   };
 
   return (
+    <>
+    <Navbar/>
     <div className="min-h-screen grid md:grid-cols-3 grid-cols-1 gap-4 p-4">
       <div className="bg-slate-600 size-full p-4 ">
         <div className="p-4 size-full md:p-0">
@@ -70,7 +73,7 @@ export default function Page() {
               </div>
               <CardTitle className="text-center text-lg">Send Message</CardTitle>
               <CardDescription className="text-base text-center mx-2">
-                Send a direct message to our team or someone specific.
+                Send an anonymous message to them. Dont know what to say? AI can help you with that.
               </CardDescription>
             </Card>
           </div>
@@ -91,7 +94,7 @@ export default function Page() {
               </div>
               <CardTitle className="text-center text-lg">Send Feedback</CardTitle>
               <CardDescription className="text-base text-center mx-2">
-                Share your feedback to help us improve or address your concerns.
+                Share an anonymous feedback to help them improve or address your concerns.
               </CardDescription>
             </Card>
           </div>
@@ -111,5 +114,6 @@ export default function Page() {
         )}
       </div>
     </div>
+    </>
   );
 }

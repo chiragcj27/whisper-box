@@ -53,7 +53,7 @@ export default function UserAccountDropDown() {
 
               <div className="flex flex-col">
                 <span className="max-w-[200px]">{user?.name}</span>
-                <span className="text-[0.8rem] max-w-[200px] text-gray-400">{user?.email}</span>
+                <span className="text-[0.7rem] text-nowrap max-w-[200px] text-gray-400">{user?.email}</span>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

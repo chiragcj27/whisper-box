@@ -28,7 +28,12 @@ export async function POST(request: Request) {
       );
     }
     if(user.restrictedKeywords.length > 0){
-      if(user.restrictedKeywords.some((word) => content.includes(word))){
+      const isRestricted = user.restrictedKeywords.some((word) => {
+        const regex = new RegExp(`\\b${word}\\b`, 'i'); // Matches whole word, case insensitive
+        return regex.test(content);
+      });
+      
+      if(isRestricted){
         return Response.json(
           {
             success: false,

@@ -28,6 +28,7 @@ export default function Dashboard() {
               {!user ? (
                 <Button
                   variant={"outline"}
+                  className="text-blue-500"
                   onClick={async () => {
                     await signIn();
                   }}
