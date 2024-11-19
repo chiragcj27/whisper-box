@@ -23,10 +23,8 @@ export async function POST(request: Request): Promise<Response>{
         const { restrictedWords } = await request.json();
         
         const restrictedWordsArray = restrictedWords.split(",");
-        console.log(restrictedWordsArray);
         const User = await UserModel.findOne({ _id: userId });
         session.user.restrictedKeywords = restrictedWords;
-        console.log(session.user);
         if(User){
             User.restrictedKeywords=restrictedWordsArray ;
             await User.save();

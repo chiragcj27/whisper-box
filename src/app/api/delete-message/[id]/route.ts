@@ -37,7 +37,6 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
             { email },
             { $pull: { messages: { _id: messageId } } }
         );
-        console.log("result : ", result);
         if (result.modifiedCount === 0) {
             return NextResponse.json(
                 { success: false, message: "Message not found" },

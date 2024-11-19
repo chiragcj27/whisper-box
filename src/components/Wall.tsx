@@ -1,7 +1,8 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import axios from "axios";
-import { useSession } from "next-auth/react";
+import wall from "@/illustrations/sloth.png";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { toast } from "./ui/use-toast";
 import PublishedMessageCard from "./PublishedMessageCard";
 
@@ -9,10 +10,10 @@ interface Message {
   _id: string;
   content: string;
   createdAt: string;
+  noOfstars: number;
 }
 
 export default function Wall() {
-  const { data: session, status } = useSession();
   const [publishedMessages, setPublishedMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -35,23 +36,24 @@ export default function Wall() {
   }
 
   useEffect(() => {
-    if (status === "authenticated") {
-      getPublishedMessages();
-    }
-  }, [status]);
+      setInterval(()=>{getPublishedMessages();},10000);
+    },[]);
 
   if (loading) {
     return <p>Loading...</p>;
   }
 
   return (
-    <ScrollArea className="h-[350px] w-full md:w-[750px] rounded-md border p-4">
+    <ScrollArea className="size-full rounded-md border p-4">
       {publishedMessages.length > 0 ? (
         publishedMessages.map((message) => (
           <PublishedMessageCard key={message._id} message={message} />
         ))
       ) : (
-        <p>No messages available</p>
+        <>
+        <Image src={wall} alt="No messages" className=" pt-10 content-end" />
+        <p className="text-center text-white">No Published Whispers To checkout at this moment</p>
+        </>
       )}
     </ScrollArea>
   );

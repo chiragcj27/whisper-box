@@ -28,7 +28,6 @@ export default function SendFeedbackCard({ onSend, onGoBack }: { onSend: () => v
         const result = { username: username, content: values.content, stars: values.stars };
 
         try {
-            console.log(result)
             const response = await axios.post("/api/send-message", result);
             toast({
                 title: response.data?.success ? "Success" : "Failed",
@@ -57,31 +56,33 @@ export default function SendFeedbackCard({ onSend, onGoBack }: { onSend: () => v
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Send Feedback</CardTitle>
-                <CardDescription>Whisper your feedback along with a rating!</CardDescription>
+                <CardTitle className="text-center">Send Feedback</CardTitle>
+                <CardDescription className="text-center">Whisper your feedback along with a rating!</CardDescription>
             </CardHeader>
             <CardContent>
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
                         <FormField
                             control={form.control}
                             name="content"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Feedback</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Write your feedback" {...field} />
+                                        <Input className="text-center min-h-20 rounded-none" type="text"placeholder="Write your feedback" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
+                        <div className="flex justify-center">
                         <FormField
                             control={form.control}
                             name="stars"
+                            
                             render={({ field }) => (
                                 <Rating
                                     name="simple-controlled"
+                                    className="stroke-white w-full stroke-0.5"
                                     value={field.value}
                                     onChange={(event, newValue) => {
                                         field.onChange(newValue);
@@ -89,9 +90,13 @@ export default function SendFeedbackCard({ onSend, onGoBack }: { onSend: () => v
                                 />
                             )}
                         />
-                        <Button type="submit">Submit</Button>
-                        <Button onClick={onGoBack} >Go Back</Button>
+                        </div>
+                    <div className="grid grid-cols-7 gap-2">
+                        <Button type="submit" className="col-span-4">Submit</Button>
+                        <Button onClick={onGoBack} className="col-span-3" variant="outline" >Go Back</Button>
+                    </div>    
                     </form>
+                    
                 </Form>
             </CardContent>
         </Card>

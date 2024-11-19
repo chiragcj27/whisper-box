@@ -5,11 +5,10 @@ export async function POST(request: Request) {
   await dbConnect();
 
   const { username, content, stars } = await request.json();
-  console.log(username,content,stars);
+
   try {
     const user = await UserModel.findOne({ username });
     if (!user) {
-      console.log(user);
       return Response.json(
         {
           success: false,
@@ -40,12 +39,11 @@ export async function POST(request: Request) {
       }
     }
     const newMessage = new MessageModel({ content, createdAt: new Date(), isPublished: false, noOfstars: stars });
-    console.log(newMessage);
+
    
     user.messages = [newMessage,...user.messages];
    
     await user.save()
-    console.log(user.messages);
     return Response.json(
         {
             success: true,

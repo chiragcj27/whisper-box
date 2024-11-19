@@ -8,8 +8,7 @@ export async function middleware(request: NextRequest) {
     const token = await getToken({ req: request });
     const url = request.nextUrl;
 
-    console.log('Token:', token);
-    console.log('Pathname:', url.pathname);
+   
 
     if (token) {
         if (

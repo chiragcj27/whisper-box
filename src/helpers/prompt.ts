@@ -19,6 +19,6 @@ export default function promptFunc(category : string) {
           "question": "Beyond the taste, what are some other aspects of food that you find particularly appealing?  Think about things like its history, cultural significance, or how it connects you to others." 
         }
       ]`
-
+    console.log(prompt);
     return prompt;
 }

@@ -53,7 +53,6 @@ export const authOptions: NextAuthOptions = {
         token.isAcceptingmessage = user.isAcceptingmessage;
         token.username = user.username;
         token.restrictedKeywords = user.restrictedKeywords?.join();
-        console.log(token.restrictedKeywords);
       }
       if(trigger === "update"){
         return {...token, ...session.user};

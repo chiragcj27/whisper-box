@@ -3,7 +3,7 @@ import axios from "axios";
 import { useSession} from "next-auth/react";
 import { use, useEffect, useState } from "react";
 import { toast } from "./ui/use-toast";
-import { Card } from "@mui/material";
+import { Card } from "@/components/ui/card";
 import { Button} from "@react-email/components";
 import { TagsInput } from "react-tag-input-component";
 
@@ -14,7 +14,6 @@ export default function RestrictedWordsCard() {
     useEffect(() => {
         if (user) {
             if(user.restrictedKeywords==""){
-                console.log("Restricted Words:", user.restrictedKeywords);
                 setRestrictedWords([]);
                 return;
             }
@@ -29,7 +28,6 @@ export default function RestrictedWordsCard() {
                 restrictedWords: RestrictedWords.join(),
             });
             await update({...session, user: {...user, restrictedKeywords: RestrictedWords.join()}});
-            console.log("Response from server:", response.data);
             toast({
                 title: response.data?.success ? "Success" : "Failed",
                 description: response.data?.message,
