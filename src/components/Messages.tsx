@@ -4,18 +4,21 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { toast } from "./ui/use-toast";
 import MessageCard from "./messageCard";
+import happy_music from "../illustrations/happy_music.svg";
+import Image from "next/image";
+import online_stats from "../illustrations/online_stats.svg"
 
 interface Message {
   _id: string;
   content: string;
   createdAt: string;
-  noOfstars : number;
+  noOfstars: number;
   isPublished: boolean;
 }
 
 export default function Message() {
   const { data: session, status } = useSession();
-  
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -60,10 +63,19 @@ export default function Message() {
     try {
       const res = await axios.post(`/api/publish-message/${messageId}`, { action: !isPublished });
       if (res.data.success) {
-        setMessages(messages.map(message => 
-          message._id === messageId ? { ...message, isPublished: !isPublished } : message
-        ));
-        toast({ title: "Success", description: `Message ${isPublished ? 'unpublished' : 'published'} successfully` });
+        setMessages(
+          messages.map((message) =>
+            message._id === messageId
+              ? { ...message, isPublished: !isPublished }
+              : message
+          )
+        );
+        toast({
+          title: "Success",
+          description: `Message ${
+            isPublished ? "unpublished" : "published"
+          } successfully`,
+        });
       } else {
         toast({ title: "Error", description: res.data.message });
       }
@@ -78,19 +90,27 @@ export default function Message() {
   }
 
   return (
-    <ScrollArea className="h-[350px] w-[750px] rounded-md border p-4">
+    <div>
       {messages.length > 0 ? (
-        messages.map((message) => (
-          <MessageCard 
-            key={message._id} 
-            message={message} 
-            onDelete={handleDelete} 
-            onPublish={() => handlePublish(message._id, message.isPublished)}
-          />
-        ))
+        <div className="flex flex-row-reverse justify-between">
+          <ScrollArea className="h-[350px] w-[750px] rounded-md border p-4">
+          {messages.map((message) => (
+            <MessageCard
+              key={message._id}
+              message={message}
+              onDelete={() => handleDelete(message._id)}
+              onPublish={() => handlePublish(message._id, message.isPublished)}
+            />
+          ))}
+        </ScrollArea>
+        <Image src={online_stats} alt="image" width={500} height={500} />
+        </div>
       ) : (
-        <p>No messages available</p>
+        <div className="flex flex-col justify-center items-center h-full">
+          <Image src={happy_music} alt="image" width={300} height={300} />
+          <h3 className="font-semibold">Relax.. No whispers received!</h3>
+        </div>
       )}
-    </ScrollArea>
+    </div>
   );
 }
