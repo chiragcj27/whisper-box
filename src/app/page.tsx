@@ -6,8 +6,8 @@ import { TypewriterTitle } from "@/components/TypewriterTitle";
 export default function Home() {
   return (
     <div>
-      <div className="object-top">
-      <TypewriterTitle/>
+      <div className="object-top">  
+      <TypewriterTitle/> 
       </div>
       <div className="-z-10 fixed bottom-0 right-0 ">
         <Image height={500} width={500} src={inlove} alt="image"/>

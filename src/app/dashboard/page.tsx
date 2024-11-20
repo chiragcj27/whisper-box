@@ -16,7 +16,7 @@ export default function Dashboard() {
   const user: any = session?.user;
   const username = user?.username;
 
-  const customUrl = `http://localhost:3000/send-message/${username}`
+  const customUrl = `https://whisperbox.cjcodes.xyz/send-message/${username}`
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100 transition-colors">
       {/* Header */}
