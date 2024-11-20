@@ -49,6 +49,7 @@ export async function POST(request: Request): Promise<Response> {
                 isVerified: false,
                 isAcceptingmessage: true,
                 messages: [],
+                restrictedKeywords: [],
             });
 
             await newUser.save();
@@ -56,7 +57,6 @@ export async function POST(request: Request): Promise<Response> {
 
         // Send verification email
         const emailResponse = await sendVerificationEmail(email, username, verifyCode);
-        console.log(emailResponse);
 
         if (!emailResponse.success) {
             return new Response(JSON.stringify({

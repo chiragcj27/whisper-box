@@ -1,72 +1,119 @@
 "use client";
-import axios from "axios";
-import { useParams } from "next/navigation";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { toast } from "@/components/ui/use-toast";
-import SuggestedMessages from "@/components/SuggestedMessages";
-import team_up from "@/illustrations/team_up.svg";
-import Image from "next/image";
+import SendFeedbackCard from "@/components/SendFeedbackCard";
+import SendMessageCard from "@/components/SendMessageCard";
 import Wall from "@/components/Wall";
+import mail from "@/illustrations/mail.webp";
+import starfirst from "@/illustrations/starfirst.png";
+import stargif from "@/illustrations/giphy.webp";
+import firstframe from "@/illustrations/1frame.png";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { CardDescription, CardTitle } from "@/components/ui/card";
+import { TextHoverEffect } from "@/components/ui/TextHover";
+import Navbar from "@/components/Navbar";
 
 export default function Page() {
-  const params = useParams<{ username: string }>();
-  const username = params.username;
-  const [content, setContent] = useState("");
+  const [showButtons, setShowButtons] = useState(true);
+  const [showSendMessageCard, setShowSendMessageCard] = useState(false);
+  const [showSendFeedbackCard, setShowSendFeedbackCard] = useState(false);
 
-  async function onSend() {
-    try {
-      const response = await axios.post("/api/send-message", {
-        username,
-        content,
-      });
-      toast({
-        title: response.data?.success ? "Success" : "Failed",
-        description: response.data?.message,
-      });
-      setContent(""); // Clear the text field
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        if (error.response.status === 403) {
-          toast({
-            title: "Failed !!",
-            description: error.response.data?.message,
-            variant: "destructive",
-          });
-        }
-      } else {
-        toast({
-          title: "Failed !!",
-          description: "Something unexpected happened",
-          variant: "destructive",
-        });
-      }
-    }
-  }
+  const handleSendMessageClick = () => {
+    setShowButtons(false);
+    setShowSendMessageCard(true);
+  };
+
+  const handleSendFeedbackClick = () => {
+    setShowButtons(false);
+    setShowSendFeedbackCard(true);
+  };
+
+  const handleFormSubmit = () => {
+    setShowButtons(true); 
+    setShowSendMessageCard(false);
+    setShowSendFeedbackCard(false);
+  };
+
+  const handleGoBack = () => {
+    setShowButtons(true);
+    setShowSendMessageCard(false);
+    setShowSendFeedbackCard(false);
+  };
 
   return (
-    <div className="min-h-screen grid md:grid-cols-3 grid-cols-1">
-      <div className="bg-slate-600 relative">
-        <div className="absolute bottom-0 left-0 p-4 md:p-0">
-          {/* <Image src={team_up} alt="illustration" className="w-24 md:w-auto" /> */}
-          <Wall/>
+    <>
+    <Navbar/>
+    <div className="min-h-screen grid md:grid-cols-3 grid-cols-1 gap-4 p-4">
+      <div className="bg-slate-600 size-full p-4 ">
+        <div className="p-4 size-full md:p-0">
+          <Wall />
         </div>
       </div>
-      <div className="mt-20 md:mt-60 mx-4 md:mx-56 md:col-span-2 col-span-1">
-        <div className="flex w-full max-w-screen-md space-x-2">
-          <Input
-            type="text"
-            placeholder="Enter your message"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+      <div className="bg-slate-700 md:col-span-2 flex flex-col items-center justify-center p-4 overflow-hidden">
+        {showButtons && (
+          <div className="flex flex-col items-center space-y-8">
+          
+            <TextHoverEffect text="Whisper It!" />
+          
+          <div className="flex flex-row items-center space-x-8">
+          <div className="w-full max-w-80 cursor-pointer group w-80 " onClick={handleSendMessageClick}>
+            <Card className="p-4 rounded-2xl shadow-lg shadow-blue-200">
+              <div className="relative w-24 h-24 mx-auto">
+                <img 
+                  
+                  src={firstframe.src} 
+                  alt="Send Message" 
+                  className="w-full h-full pb-2 absolute group-hover:hidden"
+                />
+                <img 
+                  src={mail.src} 
+                  alt="Send Message Animation" 
+                  className="w-full h-full pb-2 absolute hidden group-hover:block"
+                />
+              </div>
+              <CardTitle className="text-center text-lg">Send Message</CardTitle>
+              <CardDescription className="text-base text-center mx-2">
+                Send an anonymous message to them. Dont know what to say? AI can help you with that.
+              </CardDescription>
+            </Card>
+          </div>
+        
+          <div className="w-full max-w-80 cursor-pointer group w-80 " onClick={handleSendFeedbackClick}>
+            <Card className="p-4 rounded-2xl shadow-lg shadow-blue-200">
+              <div className="relative w-[225px] h-24 mx-auto">
+                <img 
+                  src={starfirst.src} 
+                  alt="Send Feedback" 
+                  className="w-full h-full absolute group-hover:hidden"
+                />
+                <img 
+                  src={stargif.src} 
+                  alt="Send Feedback Animation" 
+                  className="w-full h-full absolute hidden group-hover:block"
+                />
+              </div>
+              <CardTitle className="text-center text-lg">Send Feedback</CardTitle>
+              <CardDescription className="text-base text-center mx-2">
+                Share an anonymous feedback to help them improve or address your concerns.
+              </CardDescription>
+            </Card>
+          </div>
         </div>
-        <div className="mt-3">
-          <Button onClick={onSend} className="mr-2">Send</Button>
-          <SuggestedMessages/>
         </div>
+        
+        )}
+        {showSendMessageCard && (
+          <div className="w-full max-w-md p-4">
+            <SendMessageCard onSubmit={handleFormSubmit} onGoBack={handleGoBack} />
+          </div>
+        )}
+        {showSendFeedbackCard && (
+          <div className="w-full max-w-md p-4">
+            <SendFeedbackCard onSend={handleFormSubmit} onGoBack={handleGoBack} />
+          </div>
+        )}
       </div>
     </div>
+    </>
   );
 }

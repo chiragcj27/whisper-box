@@ -1,10 +1,10 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
-import { Message } from "@/model/User";
+import { MessageModel } from "@/model/User";
 export async function POST(request: Request) {
   await dbConnect();
 
-  const { username, content } = await request.json();
+  const { username, content, stars } = await request.json();
 
   try {
     const user = await UserModel.findOne({ username });
@@ -27,11 +27,28 @@ export async function POST(request: Request) {
         { status: 403 }
       );
     }
+    if(user.restrictedKeywords.length > 0){
+      const isRestricted = user.restrictedKeywords.some((word) => {
+        const regex = new RegExp(`\\b${word}\\b`, 'i'); // Matches whole word, case insensitive
+        return regex.test(content);
+      });
+      
+      if(isRestricted){
+        return Response.json(
+          {
+            success: false,
+            message: "Message contains restricted words",
+          },
+          { status: 403 }
+        );
+      }
+    }
+    const newMessage = new MessageModel({ content, createdAt: new Date(), isPublished: false, noOfstars: stars });
 
-    const newMessage= {content, createdAt: new Date(), isPublished: false}
-    user.messages.push(newMessage as Message)
+   
+    user.messages = [newMessage,...user.messages];
+   
     await user.save()
-
     return Response.json(
         {
             success: true,

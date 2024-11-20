@@ -3,11 +3,8 @@ import dbConnect from '@/lib/dbConnect';
 import { getServerSession } from 'next-auth';
 import UserModel from '@/model/User';
 import mongoose from 'mongoose';
-import { authOptions } from '../../auth/[...nextauth]/options';
-import Email from 'next-auth/providers/email';
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
-    console.log("1");
+export async function POST(req: NextRequest, { params }: { params: { id: string, action: boolean } }) {
     await dbConnect();
 
     const session = await getServerSession();
@@ -21,7 +18,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
     }
 
     const { id } = params;
-   
+    const {action} = await req.json()
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return NextResponse.json(
@@ -29,25 +26,22 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
             { status: 400 }
         );
     }
-    console.log("2");
-    const userId = user._id
-    const messageId = id
-    const email = user.email
+
+    const email = user.email;
 
     try {
-        console.log("3");
         const result = await UserModel.updateOne(
-            {email, "messages._id": messageId },
-            { $set: { "messages.$.isPublished": true } }
+            { email, "messages._id": id },
+            { $set: { "messages.$.isPublished": action } }
         );
-       console.log("result : ", result);
-       return NextResponse.json({
+
+        return NextResponse.json({
             success: true,
-            message: "Message published successfully"
-        },{ status: 200});
+            message: `Message ${action ? 'published' : 'unpublished'} successfully`
+        }, { status: 200 });
        
     } catch (err) {
-        console.log("error",err);
+        console.error("Error:", err);
         return NextResponse.json(
             { success: false, message: "Failed to publish message" },
             { status: 500 }

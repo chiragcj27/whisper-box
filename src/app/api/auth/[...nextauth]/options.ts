@@ -46,21 +46,26 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token._id = user._id?.toString();
         token.isVerified = user.isVerified;
-        token.isAcceptingMessages = user.isAcceptingMessages;
+        token.isAcceptingmessage = user.isAcceptingmessage;
         token.username = user.username;
+        token.restrictedKeywords = user.restrictedKeywords?.join();
+      }
+      if(trigger === "update"){
+        return {...token, ...session.user};
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token}) {
       if (token) {
         session.user._id = token._id;
         session.user.isVerified = token.isVerified;
-        session.user.isAcceptingMessages = token.isAcceptingMessages;
+        session.user.isAcceptingmessage = token.isAcceptingmessage;
         session.user.username = token.username;
+        session.user.restrictedKeywords = token.restrictedKeywords;
       }
       return session;
     },
