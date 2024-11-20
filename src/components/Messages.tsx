@@ -6,7 +6,7 @@ import { toast } from "./ui/use-toast";
 import MessageCard from "./messageCard";
 import happy_music from "../illustrations/happy_music.svg";
 import Image from "next/image";
-import online_stats from "../illustrations/online_stats.svg"
+import online_stats from "../illustrations/duck-waddling.gif"
 
 interface Message {
   _id: string;
@@ -86,7 +86,9 @@ export default function Message() {
   }
 
   if (loading) {
-    return <p>Loading...</p>;
+    return <div className="flex justify-center item-center h-[285px] ">
+      <Image src={online_stats} alt="image" className="h-[200px] w-[150px]" />
+    </div>;
   }
 
   return (

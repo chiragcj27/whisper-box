@@ -30,18 +30,19 @@ const QuestionsCarousel: React.FC<CarouselProps> = ({ questions }) => {
     <div>
       <Carousel
         opts={{
-          align: "start",
+          slidesToScroll: 2,
+          align: "center",
         }}
-        orientation="vertical"
-        className="w-full max-w-screen-sm"
+        orientation="horizontal"
+        className="w-[430px] "
       >
-        <CarouselContent className="-mt-1 h-[200px]">
+        <CarouselContent className="mt-1 h-[220px]">
           {questions.map((question, index) => (
             <CarouselItem key={index} className="pt-1 md:basis-1/2">
-              <div className="p-1">
-                <Card>
+              <div className="h-full p-1">
+                <Card className="h-full">
                   <CardContent className="flex items-center justify-center p-6">
-                    <span className="text font-semibold">{question}</span>
+                    <span className="text-sm font-semibold">{question}</span>
                     <Button variant={"outline"} className="ml-2 p-2 " onClick={() => handleCopy(question)}>
                     <FiCopy />
                     </Button>

@@ -13,8 +13,6 @@ const AcceptMessage: React.FC = () => {
   useEffect(() => {
     if (user) {
       setIsAcceptingMessage(user.isAcceptingmessage);
-      console.log("User:", user);
-      console.log("Accepting Messages:", isAcceptingMessage);
     }
   }, [user]);
 
@@ -31,8 +29,6 @@ const AcceptMessage: React.FC = () => {
         userId: user._id,
         acceptMessages: newStatus,
       });
-
-      console.log("Response from server:", response.data);
     } catch (error) {
       console.error("Failed to update accepting messages status:", error);
       // Revert the state if API call fails

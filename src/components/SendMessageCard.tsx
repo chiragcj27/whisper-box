@@ -1,10 +1,13 @@
-import { Button, Card, CardContent, CardHeader, Input } from "@mui/material";
+
 import axios from "axios";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import SuggestedMessages from "./SuggestedMessages";
 import { CardTitle, CardDescription } from "./ui/card";
 import { toast } from "./ui/use-toast";
+import { Card, CardContent, CardHeader } from "./ui/card";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 export default function SendMessageCard({ onSubmit, onGoBack }: { onSubmit: () => void, onGoBack: () => void }) {
     const params = useParams<{ username: string }>();
@@ -44,26 +47,28 @@ export default function SendMessageCard({ onSubmit, onGoBack }: { onSubmit: () =
     }
 
     return (
-        <Card>
+        <div className="flex flex-col gap-2">
+        <Card >
             <CardHeader>
-                <CardTitle>Send Message</CardTitle>
-                <CardDescription>Whisper your message!</CardDescription>
+                <CardTitle className="text-center">Send Message</CardTitle>
             </CardHeader>
-            <CardContent>
-                <div className="flex w-full max-w-screen-md space-x-2">
-                    <Input
-                        type="text"
-                        placeholder="Enter your message"
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                    />
-                </div>
-                <div className="mt-3">
-                    <Button onClick={onSend} className="mr-2">Send</Button>
-                    <Button onClick={onGoBack} variant="outlined">Go Back</Button>
-                    <SuggestedMessages />
+            <CardContent className="flex flex-col relative">
+                <Input
+                    className="text-center min-h-20 "
+                    type="text"
+                    placeholder="Enter your message"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                />
+                <div className="grid grid-cols-7 gap-2 mt-4">
+                    <Button className="grid col-span-4" onClick={onSend} variant="default">Send</Button>
+                    <Button onClick={onGoBack} className="grid col-span-3 h-full" variant="outline">Go Back</Button>
+                    
                 </div>
             </CardContent>
         </Card>
+        
+        <SuggestedMessages />
+        </div>
     );
 }

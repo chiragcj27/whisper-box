@@ -14,7 +14,6 @@ export async function sendVerificationEmail(
             subject: 'Wishper Box Verification',
             react: VerificationEmail({username,otp :verifyCode})
         });
-        console.log(mail)
         return {success: true, message: 'Verification email send successfully'}
     }
     catch(emailError) {

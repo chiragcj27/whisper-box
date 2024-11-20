@@ -26,6 +26,11 @@ import QuestionsCarousel from "./QuestionsCarousel";
 import { CardTitle } from "./ui/card";
 import { FaRedo } from "react-icons/fa";
 import { ReloadIcon } from "@radix-ui/react-icons"
+interface SuggestedMessagesProps {
+
+  className?: string;
+
+}
 type Category = {
   value: string;
   label: string;
@@ -62,7 +67,7 @@ const categories: Category[] = [
   },
 ];
 
-export default function SuggestedMessages() {
+export default function SuggestedMessages({className}: SuggestedMessagesProps) {
   const [open, setOpen] = React.useState(false);
   const [selectedCategory, setSelectedCategory] =
     React.useState<Category | null>(null);
@@ -99,7 +104,7 @@ export default function SuggestedMessages() {
       Please wait
     </Button>
   ) : (
-    <Button variant={"outline"}>Get AI Suggestions!</Button>
+    <Button className="border-2xl border-yellow-800 dark:border-white" variant="outline">Get AI Suggestions!</Button>
   )}
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
@@ -166,10 +171,15 @@ export default function SuggestedMessages() {
     );
   } else {
     return (
-      <div className="mt-16">
-        <CardTitle className="mb-12">Here are your suggestions :</CardTitle>
-        <QuestionsCarousel questions={questions} />
-        <Button className="mt-10" variant={"secondary"} onClick={onSelectAgain}>
+      <div className="flex flex-col mt-16">
+         <div className="text-2xl font-semibold text-center text-white py-3 px-6 rounded-lg shadow-md 
+                  bg-gradient-to-r from-blue-500 to-blue-600 ">
+    Here are some Suggestions
+  </div>
+        <div className="flex my-4 h-100 justify-center">
+          <QuestionsCarousel questions={questions} />
+        </div>
+        <Button className="mt-2" variant={"secondary"} onClick={onSelectAgain}>
           {" "}
           <FaRedo />
           <span className="ml-2">Select again </span>

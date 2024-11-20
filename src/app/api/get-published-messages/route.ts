@@ -10,7 +10,6 @@ export async function GET(request: Request) {
 
     
     const user = request.headers.get("username");
-    console.log("username",user);
     if ( !user) {
         return NextResponse.json(
             {
@@ -28,7 +27,6 @@ export async function GET(request: Request) {
 
         const publishedMessages = messages?.filter((message) => message.isPublished);
 
-        console.log(userr);
         if(!userr){
             return NextResponse.json(
                 {
